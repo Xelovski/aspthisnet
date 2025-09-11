@@ -20,3 +20,17 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+
+.cent{
+    text-align:center;
+}
+.butto {
+    padding:4px;
+    text-align: center;
+    background-color: blue;
+    color:antiquewhite;
+}
+.butto:hover{
+    background-color:red;
+}
