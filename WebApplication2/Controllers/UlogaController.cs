@@ -9,5 +9,9 @@ namespace WebApplication2.Controllers
         {
             return View();
         }
+        public IActionResult Uloha2()
+        {
+            return View();
+        }
     }
 }

@@ -20,7 +20,7 @@ html {
 body {
   margin-bottom: 60px;
 }
-
+/*-------uloha1-----*/
 
 .cent{
     text-align:center;
@@ -34,3 +34,23 @@ body {
 .butto:hover{
     background-color:red;
 }
+/*-----uloha2------*/
+.shadow{
+    box-shadow:black 5px 15px;
+}
+.pad15{
+    padding:15px;
+}
+.round{
+    border-radius:150px;
+}
+.small{
+    width:170px;
+}
+.butto2 {
+    padding: 4px;
+    text-align: center;
+    background-color: antiquewhite;
+}
+
+
