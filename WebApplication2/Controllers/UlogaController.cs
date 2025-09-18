@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using WebApplication2.Models;
 
 namespace WebApplication2.Controllers
@@ -79,6 +80,11 @@ namespace WebApplication2.Controllers
         }
         public IActionResult Uloha8()
         {
+            return View();
+        }
+        public IActionResult Uloha9()
+        {
+
             return View();
         }
     }

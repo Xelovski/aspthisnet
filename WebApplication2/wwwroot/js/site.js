@@ -75,7 +75,28 @@ const jsst = [
     { meno: "mitr", vek: 12 },
     { meno: "filp", vek: 30 }
 ]
-jsst.forEach(a => console.log(a.meno+", "+a.vek))
+const q = '[{ "meno": "pitr", "vek": 78 }, { "meno": "mitr", "vek": 12 }, { "meno": "filp", "vek": 30 }]';
+console.log(q)
+const w = JSON.parse(q)
+w.forEach(a => console.log(a.meno + ", " + a.vek))
+
+const zln = '[{"meno":"jan","poz":"domovnik"},{"meno":"pan","poz":"progr"},{"meno":"stfan","poz":"progr"}]';
+const zl = JSON.parse(zln)
+const prog = zl.filter(zl => zl.poz == "progr");
+prog.forEach(f => console.log(f.meno))
+
+
+function GEN() {
+    const knig = [
+        { meno: "harripotr", autor: "jkrow" },
+        { meno: "panprstov", autor: "jrrtol" },
+        { meno: "1948", autor: "orvelG" }
+    ]
+    const we = JSON.stringify(knig)
+    const ou=JSON.parse(we)
+    ou.forEach(f => document.getElementById("tabulka").innerHTML +=`<tr class="tr"><td>${f.meno}</td><td>${f.autor}</td></tr>`)
+}
+
 
 
 
