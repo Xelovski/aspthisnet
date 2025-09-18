@@ -69,5 +69,9 @@ namespace WebApplication2.Controllers
             };
             return View(users);
         }
+        public IActionResult Uloha6()
+        {
+            return View();
+        }
     }
 }
