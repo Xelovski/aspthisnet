@@ -38,15 +38,25 @@ console.log(obj.meno);
 console.log(obj.vek);
 console.log(obj.mesto);
 
-function giveJ() {
-    const ree = {
-        meno: "Mart",
-        vek: 78,
-        mesto: "Express"
-    };
-    var a = "Meno: ";
-    a += ree.meno + ", Vek: " + ree.vek + ", Mesto: " + ree.mesto;
-    document.getElementById("out1").textContent = a;
+function giveJ(b) {
+    if (b == 1) {
+        const ree = {
+            meno: "Mart",
+            vek: 78,
+            mesto: "Express"
+        };
+        var a = "Meno: ";
+        a += ree.meno + ", Vek: " + ree.vek + ", Mesto: " + ree.mesto;
+        document.getElementById("out1").textContent = a;
+    } else if (b == 2) {
+        const osob = {
+            meno: "Jan",
+            fims: ["supporter", "Frozen", "BadGuy"]
+        };
+        var f = ""
+        osob.fims.forEach(film => f += film + "\n")
+        console.log("Oblubene fims of user " + osob.meno + ":\n" + f)
+    }
 }
 console.log("");
 
@@ -57,5 +67,16 @@ const products = [
 ]
 console.log(products[1].name);
 console.log(products[1].val);
+
+console.log("");
+
+const jsst = [
+    { meno: "pitr", vek: 78 },
+    { meno: "mitr", vek: 12 },
+    { meno: "filp", vek: 30 }
+]
+jsst.forEach(a => console.log(a.meno+", "+a.vek))
+
+
 
 
