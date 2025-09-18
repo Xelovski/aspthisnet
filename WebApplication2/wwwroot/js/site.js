@@ -23,3 +23,39 @@ function cont() {
     document.getElementById("am1").textContent = a.length;
 }
 
+const osoba = {
+    meno: "Jan",
+    vek: 21,
+    mesto: "Blava"
+};
+const jsstr = JSON.stringify(osoba);
+console.log(jsstr);
+
+
+const jsdat = '{"meno":"Jan","vek":21,"mesto":"Blava"}';
+const obj = JSON.parse(jsdat);
+console.log(obj.meno);
+console.log(obj.vek);
+console.log(obj.mesto);
+
+function giveJ() {
+    const ree = {
+        meno: "Mart",
+        vek: 78,
+        mesto: "Express"
+    };
+    var a = "Meno: ";
+    a += ree.meno + ", Vek: " + ree.vek + ", Mesto: " + ree.mesto;
+    document.getElementById("out1").textContent = a;
+}
+console.log("");
+
+const products = [
+    {name:"Book", val:150},
+    {name:"YOU", val:14},
+    {name:"Appartment", val:157000}
+]
+console.log(products[1].name);
+console.log(products[1].val);
+
+
