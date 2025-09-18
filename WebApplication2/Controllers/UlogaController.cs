@@ -73,5 +73,13 @@ namespace WebApplication2.Controllers
         {
             return View();
         }
+        public IActionResult Uloha7()
+        {
+            return View();
+        }
+        public IActionResult Uloha8()
+        {
+            return View();
+        }
     }
 }

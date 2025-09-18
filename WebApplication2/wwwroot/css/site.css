@@ -93,3 +93,6 @@ body {
     border-bottom:1px solid black;
 }
 .tr:hover{background-color:bisque;}
+.bor{border:2px solid black;}
+.borR{border-radius:20px;}
+.mar25{margin:25px;}
