@@ -97,7 +97,17 @@ function GEN() {
     ou.forEach(f => document.getElementById("tabulka").innerHTML +=`<tr class="tr"><td>${f.meno}</td><td>${f.autor}</td></tr>`)
 }
 
+function upd() {
+    var a = document.getElementById("predmet").value
+    if (document.getElementById("predmety").value.length < 1) {
+        document.getElementById("q4").textContent += a
+        document.getElementById("predmety").value += a
+    } else {
+        document.getElementById("q4").textContent += ", " + a
+        document.getElementById("predmety").value += ", " + a
+    }
 
+}
 
 
 

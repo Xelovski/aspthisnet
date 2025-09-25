@@ -99,10 +99,10 @@ namespace WebApplication2.Controllers
         public IActionResult U10(Useri u)
         {
             usersL.Add(u);
-            return RedirectToAction("U10out", u);
+            return RedirectToAction("U10out");
         }
         [HttpGet]
-        public IActionResult U10out(Useri u) 
+        public IActionResult U10out() 
         {
             ViewBag.X = usersL;
             return View(); 

@@ -8,5 +8,6 @@
         public string Pass { get; set; } = "-";
         public string Uname { get; set; } = "-";
         public int Age { get; set; } = 1;
+        public List<string> Val { get; set; }= new List<string>();
     }
 }
