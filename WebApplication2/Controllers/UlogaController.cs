@@ -6,6 +6,7 @@ namespace WebApplication2.Controllers
 {
     public class UlogaController : Controller
     {
+        private static List<Useri> usersL { get; set; } = new List<Useri>();
         public IActionResult Uloha()
         {
             return View();
@@ -20,6 +21,7 @@ namespace WebApplication2.Controllers
         }
         public IActionResult Uloha4()
         {
+            /*
             List<Useri> users = new List<Useri>()
             {
                 new Useri() {
@@ -35,10 +37,12 @@ namespace WebApplication2.Controllers
                     Username = "TestUn1",
                 }
             };
-            return View(users);
+            return View(users);*/
+            return View();
         }
         public IActionResult Uloha5()
         {
+            /*
             List<Useri> users = new List<Useri>()
             {
                 new Useri() {
@@ -68,7 +72,7 @@ namespace WebApplication2.Controllers
                     ,Username="Heeeeeeeee"
                 }
             };
-            return View(users);
+            return View(users);*/return View();
         }
         public IActionResult Uloha6()
         {
@@ -86,6 +90,22 @@ namespace WebApplication2.Controllers
         {
 
             return View();
+        }
+        public IActionResult U10()
+        {
+            return View(new Useri());
+        }
+        [HttpPost]
+        public IActionResult U10(Useri u)
+        {
+            usersL.Add(u);
+            return RedirectToAction("U10out", u);
+        }
+        [HttpGet]
+        public IActionResult U10out(Useri u) 
+        {
+            ViewBag.X = usersL;
+            return View(); 
         }
     }
 }
