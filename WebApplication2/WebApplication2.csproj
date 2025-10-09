@@ -15,4 +15,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\WebApplication2.Datalayer\WebApplication2.Datalayer.csproj" />
+  </ItemGroup>
+
 </Project>

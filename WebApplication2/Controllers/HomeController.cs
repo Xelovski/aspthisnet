@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using WebApplication2.Datalayer.Entities;
 using WebApplication2.Models;
 
 namespace WebApplication2.Controllers
@@ -10,6 +11,7 @@ namespace WebApplication2.Controllers
 
         public HomeController(ILogger<HomeController> logger)
         {
+            UserEntity user = new UserEntity();
             _logger = logger;
         }
 

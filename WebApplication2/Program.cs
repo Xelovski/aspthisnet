@@ -1,3 +1,6 @@
+using WebApplication2.Datalayer;
+using WebApplication2.Datalayer.Entities;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -24,4 +27,23 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+
+while (true)
+{
+    using (var db = new AppDbContext())
+    {
+        db.Database.EnsureCreated();
+        var user = new UserEntity { Name = "Speller", Email = "sp@gogle.crw" };
+        db.Users.Add(user);
+        db.SaveChanges();
+        Console.WriteLine("\nUsers:");
+        var users = db.Users.ToList();
+        foreach (var u in users)
+        {
+            Console.WriteLine($"ID:{u.Id},Jmeno:{u.Name},Emil:{u.Email}");
+        }
+        Console.WriteLine("");
+    }
+    break;
+}
 app.Run();
