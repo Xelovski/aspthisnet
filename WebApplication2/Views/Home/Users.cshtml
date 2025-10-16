@@ -1,5 +1,6 @@
 ﻿@using WebApplication2.Datalayer.Entities
 @model List<UserEntity>
+<a href="@Url.Action("MakeUser","Home")">maker</a>
 <table class="table">
     <thead>
 
@@ -13,7 +14,10 @@
         @foreach(var user in Model){
             <tr>
                 <td>@user.Id</td>
-                <td>@user.Name</td>
+                <td><a href="@Url.Action("User","Home",new{userPublicId=user.PublicId})">
+                    @user.Name
+                    </a>
+                </td>
                 <td>@user.Email</td>
             </tr>
         }
