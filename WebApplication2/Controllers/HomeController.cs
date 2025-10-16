@@ -42,7 +42,10 @@ namespace WebApplication2.Controllers
         [HttpPost]
         public IActionResult MakeUser(cREATEuSERModel us)
         {
-            if (us == null) { us = new cREATEuSERModel() { Name = "wh", Email = "q@q.q" }; }
+            if (us == null||us.Name==""||us.Email==""||us.Name==null||us.Email==null) 
+            { 
+                us = new cREATEuSERModel() { Name = "wh", Email = "q@q.q" }; 
+            }
             _context.Users.Add(new UserEntity() { Name=us.Name,Email=us.Email,PublicId=Guid.NewGuid()});
             _context.SaveChanges();
             return RedirectToAction("Users");
