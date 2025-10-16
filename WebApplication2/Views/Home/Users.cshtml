@@ -1,1 +1,21 @@
-﻿
+﻿@using WebApplication2.Datalayer.Entities
+@model List<UserEntity>
+<table class="table">
+    <thead>
+
+        <td>Id</td>
+
+        <td>Naame</td>
+
+        <td>Email</td>
+    </thead>
+    <tbody>
+        @foreach(var user in Model){
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.Name</td>
+                <td>@user.Email</td>
+            </tr>
+        }
+    </tbody>
+</table>

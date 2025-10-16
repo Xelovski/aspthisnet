@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using WebApplication2.Datalayer;
 using WebApplication2.Datalayer.Entities;
 using WebApplication2.Models;
 
@@ -8,10 +9,11 @@ namespace WebApplication2.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly AppDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, AppDbContext context)
         {
-            UserEntity user = new UserEntity();
+            _context= context;
             _logger = logger;
         }
 
@@ -23,6 +25,16 @@ namespace WebApplication2.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+        public IActionResult Users()
+        {
+            var userList = _context.Users.ToList();
+            return View(userList);
+        }
+        public IActionResult User(Guid userPublicID)//userDetail
+        {
+            var user = _context.Users.FirstOrDefault(u=>u.PublicId==userPublicID);
+            return View(user);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
