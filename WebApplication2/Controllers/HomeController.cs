@@ -31,6 +31,14 @@ namespace WebApplication2.Controllers
             var userList = _context.Users.ToList();
             return View(userList);
         }
+        [HttpPost]
+        public IActionResult Users(Guid name) 
+        {
+            var us = _context.Users.FirstOrDefault(u => u.PublicId == name);
+            _context.Users.Remove(us);
+            _context.SaveChanges();
+            return RedirectToAction("Users");
+        }
         public IActionResult User(Guid userPublicID)//userDetail
         {
             var user = _context.Users.FirstOrDefault(u=>u.PublicId==userPublicID);
@@ -47,6 +55,28 @@ namespace WebApplication2.Controllers
                 us = new cREATEuSERModel() { Name = "wh", Email = "q@q.q" }; 
             }
             _context.Users.Add(new UserEntity() { Name=us.Name,Email=us.Email,PublicId=Guid.NewGuid()});
+            _context.SaveChanges();
+            return RedirectToAction("Users");
+        }
+        public IActionResult Update(Guid userPublicID) 
+        {
+            var user = _context.Users.FirstOrDefault(u => u.PublicId == userPublicID);
+            Console.WriteLine(userPublicID);
+            Console.WriteLine(user.Email);
+            return View(new UpdateModel() { PublicId=userPublicID,Email=user.Email});
+        }
+        [HttpPost]
+        public IActionResult Update(UpdateModel model)
+        {
+            if (model == null || model.Email == "" || model.Email == null )
+            {
+                model = new UpdateModel() { PublicId = model.PublicId, Email = "qq@qq.qq" };
+            }
+            Console.WriteLine(model.PublicId);
+            var us = _context.Users.FirstOrDefault(u => u.PublicId == model.PublicId);
+            _context.Users.Remove(us);
+            _context.SaveChanges();
+            _context.Users.Add(new UserEntity() {Id=us.Id, Name = us.Name, Email = model.Email, PublicId = model.PublicId });
             _context.SaveChanges();
             return RedirectToAction("Users");
         }
