@@ -21,13 +21,13 @@
                 <td>@user.Email</td>
                 <td>
                     <a href="@Url.Action("Update","Home",new{userPublicId=user.PublicId})"class="butto4">
-                        Update
+                        Change
                     </a>
                 </td>
                 <td>
                     <form action="Users" method="post">
                         <input type="hidden" name="name" value=@user.PublicId />
-                        <input type="submit" value="DeLETE" class="butto3" />
+                        <input type="submit" value=" X " class="butto3" />
                     </form>
                 </td>
             </tr>
