@@ -97,3 +97,25 @@ body {
 .borR{border-radius:20px;}
 .mar25{margin:25px;}
 
+.butto3 {
+    padding: 7px;
+    border: 1px solid black;
+    border-radius: 10px;
+    text-align: center;
+    background-color: red;
+}
+
+.butto3:hover {
+    background-color: palevioletred;
+}
+.butto4 {
+    padding: 7px;
+    border: 1px solid black;
+    border-radius: 10px;
+    text-align: center;
+    background-color: lightblue;
+}
+
+.butto4:hover {
+    background-color: lightcoral;
+}

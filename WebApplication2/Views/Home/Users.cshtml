@@ -1,6 +1,6 @@
 ﻿@using WebApplication2.Datalayer.Entities
 @model List<UserEntity>
-<a href="@Url.Action("MakeUser","Home")">maker</a>
+<a href="@Url.Action("MakeUser","Home")"class="butto4">maker</a>
 <table class="table">
     <thead>
         <td>Id</td>
@@ -20,14 +20,14 @@
                 </td>
                 <td>@user.Email</td>
                 <td>
-                    <a href="@Url.Action("Update","Home",new{userPublicId=user.PublicId})">
+                    <a href="@Url.Action("Update","Home",new{userPublicId=user.PublicId})"class="butto4">
                         Update
                     </a>
                 </td>
                 <td>
                     <form action="Users" method="post">
                         <input type="hidden" name="name" value=@user.PublicId />
-                        <input type="submit" value="DeLETE" />
+                        <input type="submit" value="DeLETE" class="butto3" />
                     </form>
                 </td>
             </tr>
