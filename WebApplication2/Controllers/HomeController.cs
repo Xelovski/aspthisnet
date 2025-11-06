@@ -1,4 +1,6 @@
 using System.Diagnostics;
+using BussinessLayer.Interfaces.Services;
+using Common.DTO;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication2.Datalayer;
 using WebApplication2.Datalayer.Entities;
@@ -8,15 +10,24 @@ namespace WebApplication2.Controllers
 {
     public class HomeController : Controller
     {
+        //----------------------------------------------------------------
+        private static List<UserDTO> _users = new List<UserDTO>();
         private readonly ILogger<HomeController> _logger;
         private readonly AppDbContext _context;
+        private readonly IUserService _userService;
 
-        public HomeController(ILogger<HomeController> logger, AppDbContext context)
+        public HomeController(ILogger<HomeController> logger, AppDbContext context,IUserService usS)
         {
             _context= context;
             _logger = logger;
+            _userService= usS;
         }
 
+        public async Task<IActionResult> Users()
+        {
+            var userList = await _userService.GetAllAsync();
+            return View(userList);
+        }//-------------------------------------------------------
         public IActionResult Index()
         {
             return View();
@@ -25,11 +36,6 @@ namespace WebApplication2.Controllers
         public IActionResult Privacy()
         {
             return View();
-        }
-        public IActionResult Users()
-        {
-            var userList = _context.Users.ToList();
-            return View(userList);
         }
         [HttpPost]
         public IActionResult Users(Guid name) 
@@ -44,7 +50,7 @@ namespace WebApplication2.Controllers
             var user = _context.Users.FirstOrDefault(u=>u.PublicId==userPublicID);
             return View(user);
         }
-        public IActionResult MakeUser() {
+        public async Task<IActionResult> MakeUser() {
             return View(new cREATEuSERModel());
         }
         [HttpPost]
@@ -60,9 +66,9 @@ namespace WebApplication2.Controllers
         }
         public IActionResult Update(Guid userPublicID) 
         {
+            //Console.WriteLine(userPublicID);
+            //Console.WriteLine(user.Email);
             var user = _context.Users.FirstOrDefault(u => u.PublicId == userPublicID);
-            Console.WriteLine(userPublicID);
-            Console.WriteLine(user.Email);
             return View(new UpdateModel() { PublicId=userPublicID,Email=user.Email});
         }
         [HttpPost]

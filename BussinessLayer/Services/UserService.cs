@@ -20,12 +20,21 @@ namespace BussinessLayer.Services
 
         public async Task<bool> CreateAsync(UserDTO model)//
         {
+
             throw new NotImplementedException();
         }
 
         public async Task<bool> DeleteAsync(Guid publicId)//async
         {
-            throw new NotImplementedException();
+            /*
+            var us =  _context.Users.FirstOrDefaultAsync(u => u.PublicId == publicId);
+            if (us != null)
+            {
+                await _context.Users.Remove(us);
+                await _context.SaveChangesAsync();
+            }
+            //throw new NotImplementedException();*/
+            return true;
         }
 
         public async Task<List<UserDTO>> GetAllAsync()//async
@@ -36,6 +45,7 @@ namespace BussinessLayer.Services
             {
                 var userDTO = new UserDTO()
                 {
+                    Id =user.Id,
                     PublicId = user.PublicId,
                     Name = user.Name,
                     Emil = user.Email
@@ -48,12 +58,14 @@ namespace BussinessLayer.Services
 
         public async Task<UserDTO> GetByPublicIIdAsync(Guid publicId)//async
         {
+
             throw new NotImplementedException();
         }
 
         public async Task<bool> UpdateAsync(UserDTO model)//async
         {
-            throw new NotImplementedException();
+
+            return true;
         }
     }
 }

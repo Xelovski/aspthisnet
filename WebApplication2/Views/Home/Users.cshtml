@@ -1,5 +1,6 @@
-﻿@using WebApplication2.Datalayer.Entities
-@model List<UserEntity>
+﻿@using Common.DTO
+@using WebApplication2.Datalayer.Entities
+@model List<UserDTO>
 <a href="@Url.Action("MakeUser","Home")"class="butto4">maker</a>
 <table class="table">
     <thead>
@@ -18,7 +19,7 @@
                     @user.Name
                     </a>
                 </td>
-                <td>@user.Email</td>
+                <td>@user.Emil</td>
                 <td>
                     <a href="@Url.Action("Update","Home",new{userPublicId=user.PublicId})"class="butto4">
                         Change
