@@ -6,4 +6,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\WebApplication2.Datalayer\WebApplication2.Datalayer.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Interfaces\Repository\" />
+    <Folder Include="Repository\" />
+  </ItemGroup>
+
 </Project>
