@@ -1,3 +1,5 @@
+using BussinessLayer.Interfaces.Services;
+using BussinessLayer.Services;
 using WebApplication2.Datalayer;
 using WebApplication2.Datalayer.Entities;
 
@@ -6,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>();
+builder.Services.AddScoped<IUserService,UserService>();
 
 var app = builder.Build();
 

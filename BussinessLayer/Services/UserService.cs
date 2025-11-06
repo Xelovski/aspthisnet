@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BussinessLayer.Interfaces.Services;
 using Common.DTO;
+using Microsoft.EntityFrameworkCore;
 using WebApplication2.Datalayer;
 
 namespace BussinessLayer.Services
@@ -29,7 +30,20 @@ namespace BussinessLayer.Services
 
         public async Task<List<UserDTO>> GetAllAsync()//async
         {
-            throw new NotImplementedException();
+            var userList=await _context.Users.ToListAsync();
+            var userListDTO=new List<UserDTO>();
+            foreach (var user in userList)
+            {
+                var userDTO = new UserDTO()
+                {
+                    PublicId = user.PublicId,
+                    Name = user.Name,
+                    Emil = user.Email
+                };
+                userListDTO.Add(userDTO);
+            }
+            return userListDTO;
+            //throw new NotImplementedException();
         }
 
         public async Task<UserDTO> GetByPublicIIdAsync(Guid publicId)//async
