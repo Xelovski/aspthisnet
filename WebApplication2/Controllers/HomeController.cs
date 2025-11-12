@@ -27,63 +27,52 @@ namespace WebApplication2.Controllers
         {
             var userList = await _userService.GetAllAsync();
             return View(userList);
-        }//-------------------------------------------------------
-        public IActionResult Index()
-        {
-            return View();
         }
+        public IActionResult Index()
+        {return View();}
 
         public IActionResult Privacy()
-        {
-            return View();
-        }
+        {return View();}
         [HttpPost]
-        public IActionResult Users(Guid name) 
+        public async Task<IActionResult> Users(Guid name) 
         {
-            var us = _context.Users.FirstOrDefault(u => u.PublicId == name);
-            _context.Users.Remove(us);
-            _context.SaveChanges();
+            await _userService.DeleteAsync(name);
             return RedirectToAction("Users");
         }
-        public IActionResult User(Guid userPublicID)//userDetail
+        public async Task<IActionResult> User(Guid userPublicID)//userDetail
         {
-            var user = _context.Users.FirstOrDefault(u=>u.PublicId==userPublicID);
+            var user = await _userService.GetByPublicIIdAsync(userPublicID);
             return View(user);
         }
         public async Task<IActionResult> MakeUser() {
             return View(new cREATEuSERModel());
         }
         [HttpPost]
-        public IActionResult MakeUser(cREATEuSERModel us)
-        {
-            if (us == null||us.Name==""||us.Email==""||us.Name==null||us.Email==null) 
-            { 
-                us = new cREATEuSERModel() { Name = "wh", Email = "q@q.q" }; 
-            }
-            _context.Users.Add(new UserEntity() { Name=us.Name,Email=us.Email,PublicId=Guid.NewGuid()});
-            _context.SaveChanges();
+        public async Task<IActionResult> MakeUser(cREATEuSERModel us)
+        {            
+            var ot= 0; var q=new UserDTO();
+            var userList = await _userService.GetAllAsync();
+            foreach (var user in userList) { if (ot < user.Id) { ot = user.Id; } }
+            if (us == null || us.Name == "" || us.Email == "" || us.Name == null || us.Email == null)
+            { q = new UserDTO() { Name = "wh", Emil = "q@q.q", Id = ot + 1, PublicId = Guid.NewGuid() }; }
+            else { q = new UserDTO() { Name = us.Name, Emil = us.Email, Id = ot + 1, PublicId = Guid.NewGuid() }; }
+            await _userService.CreateAsync(q);
             return RedirectToAction("Users");
         }
-        public IActionResult Update(Guid userPublicID) 
-        {
-            //Console.WriteLine(userPublicID);
-            //Console.WriteLine(user.Email);
-            var user = _context.Users.FirstOrDefault(u => u.PublicId == userPublicID);
-            return View(new UpdateModel() { PublicId=userPublicID,Email=user.Email});
+        public async Task<IActionResult> Update(Guid userPublicID) 
+        {            
+            var user = await _userService.GetByPublicIIdAsync(userPublicID);
+            return View(new UpdateModel() { PublicId=userPublicID,Email=user.Emil});
         }
         [HttpPost]
-        public IActionResult Update(UpdateModel model)
+        public async Task<IActionResult> Update(UpdateModel model)
         {
             if (model == null || model.Email == "" || model.Email == null )
             {
                 model = new UpdateModel() { PublicId = model.PublicId, Email = "qq@qq.qq" };
             }
-            Console.WriteLine(model.PublicId);
-            var us = _context.Users.FirstOrDefault(u => u.PublicId == model.PublicId);
-            _context.Users.Remove(us);
-            _context.SaveChanges();
-            _context.Users.Add(new UserEntity() {Id=us.Id, Name = us.Name, Email = model.Email, PublicId = model.PublicId });
-            _context.SaveChanges();
+            var us = await _userService.GetByPublicIIdAsync(model.PublicId);
+            await _userService.UpdateAsync(us);
             return RedirectToAction("Users");
         }
 
