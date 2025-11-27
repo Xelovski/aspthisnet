@@ -36,6 +36,12 @@ namespace BussinessLayer.Services
         public async Task<bool> DeleteAsync(Guid publicId)//async
         {
             var us = await _context.Users.ToListAsync();
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.PublicId == publicId); 
+            if (user == null) { return false; } 
+            _context.Users.Remove(user); 
+            await _context.SaveChangesAsync(); 
+            return true;
+            /*
             foreach (UserEntity? i in us)
             {
                 if (publicId == i.PublicId)
@@ -50,11 +56,12 @@ namespace BussinessLayer.Services
                     if (a != null)
                     {
                         _context.Users.Remove(a);
-                        await _context.SaveChangesAsync();
+                        //_context.Users.ExecuteDeleteAsync
+                        _context.SaveChanges();
                     }
                 }
             }
-            return true;
+            return true;*/
         }
 
         public async Task<List<UserDTO>> GetAllAsync()//async
@@ -105,20 +112,13 @@ namespace BussinessLayer.Services
                 Email = model.Emil,
                 PublicId = model.PublicId,
             };
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.PublicId == model.PublicId);
+            if (user == null) { return false; }
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
             var us = await _context.Users.ToListAsync();
-            if (a != null)
-            {
-                foreach (UserEntity? i in us)                
-                {
-                    if (a.PublicId == i.PublicId)
-                    {
-                        _context.Users.Remove(i);
-                        await _context.SaveChangesAsync();
-                        await _context.Users.AddAsync(a);
-                        await _context.SaveChangesAsync();
-                    }
-                }
-            }
+            await _context.Users.AddAsync(a);
+            await _context.SaveChangesAsync();
             return true;
 
         }

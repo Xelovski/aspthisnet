@@ -42,7 +42,14 @@ namespace WebApplication2.Controllers
         public async Task<IActionResult> User(Guid userPublicID)//userDetail
         {
             var user = await _userService.GetByPublicIIdAsync(userPublicID);
-            return View(user);
+            var a = new UserEntity()
+            {
+                Id = user.Id,
+                PublicId = user.PublicId,
+                Name = user.Name,
+                Email = user.Emil
+            };
+            return View(a);
         }
         public async Task<IActionResult> MakeUser() {
             return View(new cREATEuSERModel());
@@ -72,7 +79,13 @@ namespace WebApplication2.Controllers
                 model = new UpdateModel() { PublicId = model.PublicId, Email = "qq@qq.qq" };
             }
             var us = await _userService.GetByPublicIIdAsync(model.PublicId);
-            await _userService.UpdateAsync(us);
+            var n = new UserDTO() {
+                Id=us.Id,
+                Emil=model.Email,
+                Name=us.Name,
+                PublicId=us.PublicId
+            };
+            await _userService.UpdateAsync(n);
             return RedirectToAction("Users");
         }
 
