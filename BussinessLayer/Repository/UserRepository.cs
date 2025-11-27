@@ -4,26 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BussinessLayer.Interfaces.Repository;
+using Microsoft.EntityFrameworkCore;
 using WebApplication2.Datalayer;
 using WebApplication2.Datalayer.Entities;
 
 namespace BussinessLayer.Repository
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : BaseRepository<UserEntity>, IUserRepository
     {
         private readonly AppDbContext _context;
-        public UserRepository(AppDbContext context)
-        {
+        public UserRepository(AppDbContext context):base(context) {
+        
             _context = context;
         }
-        public Task<List<UserEntity>> GetAll()
-        {
-            throw new NotImplementedException();
-        }
 
-        public Task<UserEntity?> GetEmailAsync(string emil)
+        public async Task<UserEntity?> GetEmailAsync(string emil)
         {
-            throw new NotImplementedException();
+            return await _context.Users.FirstOrDefaultAsync(e => e.Email == emil);
         }
     }
 }

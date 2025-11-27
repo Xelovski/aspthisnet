@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BussinessLayer.Interfaces.Repository;
 using BussinessLayer.Interfaces.Services;
 using Common.DTO;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +14,10 @@ namespace BussinessLayer.Services
 {
     public class UserService : IUserService
     {
-        private readonly AppDbContext _context;
-        public UserService(AppDbContext context) 
+        private readonly IUserRepository _userRepository;
+        public UserService(IUserRepository r)
         {
-            _context = context;
+            _userRepository = r;
         }
 
         public async Task<bool> CreateAsync(UserDTO model)//
@@ -28,18 +29,18 @@ namespace BussinessLayer.Services
                 Email = model.Emil,
                 PublicId = model.PublicId,
             };
-            await _context.Users.AddAsync(a);
-            await _context.SaveChangesAsync();
+            await _userRepository.CreateAsync(a);
+            await _userRepository.SaveChangesAsync();
             return true;
         }
 
         public async Task<bool> DeleteAsync(Guid publicId)//async
         {
-            var us = await _context.Users.ToListAsync();
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.PublicId == publicId); 
+            var us = await _userRepository.GetAllAsync();
+            var user = await _userRepository.GetByPublicIdAsync(publicId); 
             if (user == null) { return false; } 
-            _context.Users.Remove(user); 
-            await _context.SaveChangesAsync(); 
+            _userRepository.Delete(user);
+            await _userRepository.SaveChangesAsync();
             return true;
             /*
             foreach (UserEntity? i in us)
@@ -66,7 +67,7 @@ namespace BussinessLayer.Services
 
         public async Task<List<UserDTO>> GetAllAsync()//async
         {
-            var userList=await _context.Users.ToListAsync();
+            var userList=await _userRepository.GetAllAsync();
             var userListDTO=new List<UserDTO>();
             foreach (UserEntity? user in userList)
             {
@@ -80,13 +81,12 @@ namespace BussinessLayer.Services
                 userListDTO.Add(userDTO);
             }
             return userListDTO;
-            //throw new NotImplementedException();
         }
 
         public async Task<UserDTO> GetByPublicIIdAsync(Guid publicId)//async
         {
             var userDTO = new UserDTO();
-            var us = await _context.Users.ToListAsync();
+            var us = await _userRepository.GetAllAsync();
             foreach (UserEntity? i in us)
             {
                 if (publicId == i.PublicId)
@@ -112,13 +112,13 @@ namespace BussinessLayer.Services
                 Email = model.Emil,
                 PublicId = model.PublicId,
             };
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.PublicId == model.PublicId);
+            var user = await _userRepository.GetByPublicIdAsync(model.PublicId);
             if (user == null) { return false; }
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
-            var us = await _context.Users.ToListAsync();
-            await _context.Users.AddAsync(a);
-            await _context.SaveChangesAsync();
+            _userRepository.Delete(user);
+            await _userRepository.SaveChangesAsync();
+            var us = await _userRepository.GetAllAsync();
+            await _userRepository.CreateAsync(a);
+            await _userRepository.SaveChangesAsync();
             return true;
 
         }

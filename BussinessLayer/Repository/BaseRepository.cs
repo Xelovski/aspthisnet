@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BussinessLayer.Interfaces.Repository;
+using Microsoft.EntityFrameworkCore;
 using WebApplication2.Datalayer;
 using WebApplication2.Datalayer.Entities;
 
@@ -16,39 +17,40 @@ namespace BussinessLayer.Repository
         {
             _context = appDbContext;
         }
-        public Task<TEntity> CreateAsync(TEntity entity)
+        public virtual async Task<TEntity> CreateAsync(TEntity entity)
         {
-            throw new NotImplementedException();
+            await _context.Set<TEntity>().AddAsync(entity);
+            return  entity;
         }
 
         public void Delete(TEntity entity)
         {
-            throw new NotImplementedException();
+            _context.Set<TEntity>().Remove(entity);
         }
 
-        public Task<List<TEntity>> GetAllAsync()
+        public async Task<List<TEntity>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Set<TEntity>().ToListAsync();
         }
 
-        public Task<TEntity?> GetByIdAsync(int id)
+        public async Task<TEntity?> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Set<TEntity>().FirstOrDefaultAsync(t=>t.Id==id);
         }
 
-        public Task<TEntity?> GetByPublicIdAsync(Guid publicId)
+        public virtual async Task<TEntity?> GetByPublicIdAsync(Guid publicId)
         {
-            throw new NotImplementedException();
+            return await _context.Set<TEntity>().FirstOrDefaultAsync(x => x.PublicId == publicId);
         }
 
-        public Task<int> SaveChangesAsync()
+        public virtual async Task<int> SaveChangesAsync()
         {
-            throw new NotImplementedException();
+            return await _context.SaveChangesAsync();
         }
 
         public void Update(TEntity entity)
         {
-            throw new NotImplementedException();
+            _context.Set<TEntity>().Update(entity);
         }
     }
 }

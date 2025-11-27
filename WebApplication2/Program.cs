@@ -1,4 +1,6 @@
+using BussinessLayer.Interfaces.Repository;
 using BussinessLayer.Interfaces.Services;
+using BussinessLayer.Repository;
 using BussinessLayer.Services;
 using WebApplication2.Datalayer;
 using WebApplication2.Datalayer.Entities;
@@ -9,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>();
 builder.Services.AddScoped<IUserService,UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 
