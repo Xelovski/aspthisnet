@@ -111,3 +111,17 @@ function upd() {
 
 
 
+function Del() {
+    var a = document.getElementById("sus").value;
+    eval(`a = ${a}`);
+    var q = [];
+    a.forEach(usr => {
+        console.log(a);
+
+        if (document.getElementById(`${usr}`).checked) {
+            q.push(usr);
+        }
+    })
+    document.getElementById("here").value = q;
+    document.getElementById("suser").style = "display:block;";
+}

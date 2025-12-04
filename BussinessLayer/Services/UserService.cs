@@ -82,6 +82,16 @@ namespace BussinessLayer.Services
             }
             return userListDTO;
         }
+        public async Task<List<Guid>> GetAllPublicIdAsync()//async
+        {
+            var userList = await _userRepository.GetAllAsync();
+            var userListDTO = new List<Guid>();
+            foreach (UserEntity? user in userList)
+            {
+                userListDTO.Add(user.PublicId);
+            }
+            return userListDTO;
+        }
 
         public async Task<UserDTO> GetByPublicIIdAsync(Guid publicId)//async
         {

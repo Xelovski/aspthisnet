@@ -25,8 +25,23 @@ namespace WebApplication2.Controllers
 
         public async Task<IActionResult> Users()
         {
-            var userList = await _userService.GetAllAsync();
-            return View(userList);
+            var q = await _userService.GetAllAsync();
+            var userList = await _userService.GetAllPublicIdAsync();
+            ViewBag.UserList = "[";
+            foreach(var u in userList)
+            {
+
+                ViewBag.UserList += $"'{u}'"+",";
+            }
+            var a = "";
+            a = ViewBag.UserList;
+            var i = a.Length;
+            ViewBag.UserList=a.Substring(0, i - 1);
+            //Console.WriteLine(a);
+            //ViewBag.UserList.Substring(0, i-5);
+            ViewBag.UserList += "]";
+
+            return View(q);
         }
         public IActionResult Index()
         {return View();}
@@ -34,9 +49,18 @@ namespace WebApplication2.Controllers
         public IActionResult Privacy()
         {return View();}
         [HttpPost]
-        public async Task<IActionResult> Users(Guid name) 
+        public async Task<IActionResult> Users(List<string> name) 
         {
-            await _userService.DeleteAsync(name);
+
+            var userList = await _userService.GetAllPublicIdAsync();
+            ViewBag.UserList = userList.ToList();
+            //ViewBag.List = new List<string>();
+            Console.Write(name);
+            foreach (var user in name) {
+                Console.Write(user);
+                await _userService.DeleteAsync(new Guid(user));
+            }
+            //await _userService.DeleteAsync(name);
             return RedirectToAction("Users");
         }
         public async Task<IActionResult> User(Guid userPublicID)//userDetail
