@@ -55,10 +55,15 @@ namespace WebApplication2.Controllers
             var userList = await _userService.GetAllPublicIdAsync();
             ViewBag.UserList = userList.ToList();
             //ViewBag.List = new List<string>();
-            Console.Write(name);
+            //Console.WriteLine(name.GetType());
+            //Console.WriteLine("-----------------asd----------------------asd----------------------asd------------------");
             foreach (var user in name) {
-                Console.Write(user);
-                await _userService.DeleteAsync(new Guid(user));
+                var a=user.Split(",");
+                foreach(var i in a)
+                {
+                    //Console.WriteLine(i);
+                    await _userService.DeleteAsync(new Guid(i));
+                }
             }
             //await _userService.DeleteAsync(name);
             return RedirectToAction("Users");
