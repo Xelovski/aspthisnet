@@ -40,7 +40,7 @@
     </tbody>
 </table>
 <!-- -->
-<input type="text" id="sus" value="@(ViewBag.UserList)" />
+<input type="hidden" id="sus" value="@(ViewBag.UserList)" />
 <button onclick="Del()">delete selected</button>
 <form action="Users" method="post">
     <input type="hidden" name="name" id="here" value=[""] /><!-- here goes what to delete -->
