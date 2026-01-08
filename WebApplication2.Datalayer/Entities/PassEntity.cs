@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace WebApplication2.Datalayer.Entities
 {
-    public class PassEntity
+    public class PassEntity : BaseEntity
     {
-        public int Id { get; set; }
-        public string Name { get; set; }//publicid
+        public string Name { get; set; }
         public string pass { get; set; }
     }
 }
