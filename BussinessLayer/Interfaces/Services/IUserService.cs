@@ -15,5 +15,7 @@ namespace BussinessLayer.Interfaces.Services
         Task<bool> UpdateAsync(UserDTO model);
         Task<bool> DeleteAsync(Guid publicId);
         Task<List<Guid>> GetAllPublicIdAsync();
+        Task<bool> Register(LoginDTO model);
+        Task<bool> LoginAsync(LoginDTO log);
     }
 }

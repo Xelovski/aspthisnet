@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using BussinessLayer.Interfaces.Repository;
 using BussinessLayer.Interfaces.Services;
 using Common.DTO;
@@ -15,9 +16,11 @@ namespace BussinessLayer.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-        public UserService(IUserRepository r)
+        private readonly AppDbContext _context;
+        public UserService(IUserRepository r, AppDbContext appDbContext)
         {
             _userRepository = r;
+            _context = appDbContext;
         }
 
         public async Task<bool> CreateAsync(UserDTO model)//
@@ -113,6 +116,36 @@ namespace BussinessLayer.Services
             return userDTO;
         }
 
+        public async Task<bool> LoginAsync(LoginDTO log)
+        {
+            var yes=false;
+            var userList = await _userRepository.GetAllAsync();
+            foreach (UserEntity? i in userList)
+            {
+                if (log.Name == i.Name)
+                {
+                    var q= await _context.Passs.ToListAsync();
+                    foreach(var item in q)
+                    {
+                        if (log.Password == item.pass)
+                        {
+                            yes = true; break;
+                        }
+                    }
+                    //check if password correct
+                }
+            }
+            if (yes) {return true;}
+            return false;
+        }
+
+        public async Task<bool> Register(LoginDTO model)
+        {
+            var l = new PassEntity() { Name = model.Name, pass = model.Password, PublicId = model.PublicId };
+            await _context.Passs.AddAsync(l);
+            return true;
+        }
+
         public async Task<bool> UpdateAsync(UserDTO model)//async
         {
             var a = new UserEntity()
@@ -132,5 +165,6 @@ namespace BussinessLayer.Services
             return true;
 
         }
+
     }
 }

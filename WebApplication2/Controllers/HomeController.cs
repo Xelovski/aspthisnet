@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Xml.Linq;
 using BussinessLayer.Interfaces.Services;
 using Common.DTO;
 using Microsoft.AspNetCore.Mvc;
@@ -43,11 +44,6 @@ namespace WebApplication2.Controllers
 
             return View(q);
         }
-        public IActionResult Index()
-        {return View();}
-
-        public IActionResult Privacy()
-        {return View();}
         [HttpPost]
         public async Task<IActionResult> Users(List<string> name) 
         {
@@ -68,6 +64,11 @@ namespace WebApplication2.Controllers
             //await _userService.DeleteAsync(name);
             return RedirectToAction("Users");
         }
+        public IActionResult Index()
+        {return View();}
+
+        public IActionResult Privacy()
+        {return View();}
         public async Task<IActionResult> User(Guid userPublicID)//userDetail
         {
             var user = await _userService.GetByPublicIIdAsync(userPublicID);
@@ -93,6 +94,16 @@ namespace WebApplication2.Controllers
             { q = new UserDTO() { Name = "wh", Emil = "q@q.q", Id = ot + 1, PublicId = Guid.NewGuid() }; }
             else { q = new UserDTO() { Name = us.Name, Emil = us.Email, Id = ot + 1, PublicId = Guid.NewGuid() }; }
             await _userService.CreateAsync(q);
+            var l = new LoginDTO();
+            if (us == null || us.Name == "" || us.Password == null ||us.Password== "" || us.Name == null)
+            {
+                l = new LoginDTO() { Name = "wh", Password = "0" , PublicId = Guid.NewGuid() };
+            }
+            else
+            {
+                l = new LoginDTO() { Name = us.Name, Password = us.Password, PublicId = Guid.NewGuid() };
+            }
+            await _userService.Register(l);
             return RedirectToAction("Users");
         }
         public async Task<IActionResult> Update(Guid userPublicID) 
@@ -122,6 +133,18 @@ namespace WebApplication2.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        public async Task<IActionResult> Login()
+        {
+            ViewBag.Name = "0";
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Login(string name,string pass)
+        {
+            var l = new LoginDTO() { Name = name, Password = pass };
+            ViewBag.Name = await _userService.LoginAsync(l);
+            return View();
         }
     }
 }
