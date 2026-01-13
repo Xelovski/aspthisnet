@@ -86,13 +86,17 @@ namespace WebApplication2.Controllers
         }
         [HttpPost]
         public async Task<IActionResult> MakeUser(cREATEuSERModel us)
-        {            
+        {
+            Console.WriteLine("123456789123456789");
             var ot= 0; var q=new UserDTO();
             var userList = await _userService.GetAllAsync();
-            foreach (var user in userList) { if (ot < user.Id) { ot = user.Id; } }
+            foreach (var user in userList) 
+                { if (ot < user.Id) { ot = user.Id; } }
             if (us == null || us.Name == "" || us.Email == "" || us.Name == null || us.Email == null)
-            { q = new UserDTO() { Name = "wh", Emil = "q@q.q", Id = ot + 1, PublicId = Guid.NewGuid() }; }
-            else { q = new UserDTO() { Name = us.Name, Emil = us.Email, Id = ot + 1, PublicId = Guid.NewGuid() }; }
+                { q = new UserDTO() { Name = "wh", Emil = "q@q.q", Id = ot + 1, PublicId = Guid.NewGuid() }; }
+            else 
+                { q = new UserDTO() { Name = us.Name, Emil = us.Email, Id = ot + 1, PublicId = Guid.NewGuid() }; }
+
             await _userService.CreateAsync(q);
             var l = new LoginDTO();
             if (us == null || us.Name == "" || us.Password == null ||us.Password== "" || us.Name == null)
@@ -103,6 +107,7 @@ namespace WebApplication2.Controllers
             {
                 l = new LoginDTO() { Name = us.Name, Password = us.Password, PublicId = Guid.NewGuid() };
             }
+            Console.WriteLine(l.PublicId);
             await _userService.Register(l);
             return RedirectToAction("Users");
         }
@@ -136,7 +141,7 @@ namespace WebApplication2.Controllers
         }
         public async Task<IActionResult> Login()
         {
-            ViewBag.Name = "0";
+            ViewBag.Name = false;
             return View();
         }
         [HttpPost]
@@ -144,6 +149,7 @@ namespace WebApplication2.Controllers
         {
             var l = new LoginDTO() { Name = name, Password = pass };
             ViewBag.Name = await _userService.LoginAsync(l);
+            Console.WriteLine(ViewBag.Name);
             return View();
         }
     }

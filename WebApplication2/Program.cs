@@ -37,30 +37,30 @@ app.MapControllerRoute(
 
 while (true)
 {
-    /*
-    using (var db = new AppDbContext())
-    {
-        db.Database.EnsureCreated();
-        var users = db.Users.ToList();
-        foreach (var u in users)
-        {
-            db.Users.Remove(u);
-        }
-        db.SaveChanges();
-        var user = new UserEntity {Id=1, Name = "Speller", Email = "sep@gogloe.org",PublicId=Guid.NewGuid() };
-        db.Users.Add(user);
-        db.SaveChanges();
-        user = new UserEntity {Id=2, Name = "Spoofer", Email = "spo@google.online", PublicId = Guid.NewGuid() };
-        db.Users.Add(user);
-        db.SaveChanges();
-        Console.WriteLine("\nUsers:");
-        users = db.Users.ToList();
-        foreach (var u in users)
-        {
-            Console.WriteLine($"ID:{u.Id},Jmeno:{u.Name},Emil:{u.Email}");
-        }
-        Console.WriteLine("");
-    }*/
+    
+    //using (var db = new AppDbContext())
+    //{
+    //    db.Database.EnsureCreated();
+    //    var users = db.Users.ToList();
+    //    foreach (var u in users)
+    //    {
+    //        db.Users.Remove(u);
+    //    }
+    //    db.SaveChanges();
+    //    var user = new UserEntity {Id=1, Name = "Speller", Email = "sep@gogloe.org",PublicId=Guid.NewGuid() };
+    //    db.Users.Add(user);
+    //    db.SaveChanges();
+    //    user = new UserEntity {Id=2, Name = "Spoofer", Email = "spo@google.online", PublicId = Guid.NewGuid() };
+    //    db.Users.Add(user);
+    //    db.SaveChanges();
+    //    Console.WriteLine("\nUsers:");
+    //    users = db.Users.ToList();
+    //    foreach (var u in users)
+    //    {
+    //        Console.WriteLine($"ID:{u.Id},Jmeno:{u.Name},Emil:{u.Email}");
+    //    }
+    //    Console.WriteLine("");
+    //}
     break;
 }
 app.Run();

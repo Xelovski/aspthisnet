@@ -8,9 +8,5 @@ namespace WebApplication2.Models
         public string Email { get; set; }
         public string Password { get; set; }
 
-        public static implicit operator cREATEuSERModel(UserDTO v)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
