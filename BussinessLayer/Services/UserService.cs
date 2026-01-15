@@ -118,15 +118,20 @@ namespace BussinessLayer.Services
 
         public async Task<bool> LoginAsync(LoginDTO log)
         {
-            var yes=false;
+            var yes = false;
             var userList = await _userRepository.GetAllAsync();
+            Console.WriteLine("--------------------------------------------------------");
             foreach (UserEntity? i in userList)
             {
                 if (log.Name == i.Name)
                 {
-                    var q= await _context.Passs.ToListAsync();
-                    foreach(var item in q)
+                    Console.WriteLine("+++++++++++++++++++++++++++++++++++");
+                    var q = await _context.Passs.ToListAsync();
+                    Console.WriteLine(q.Count());
+                    foreach (var item in q)
                     {
+                        Console.WriteLine(item.pass);
+
                         if (log.Password == item.pass)
                         {
                             yes = true; break;
@@ -135,7 +140,7 @@ namespace BussinessLayer.Services
                     //check if password correct
                 }
             }
-            if (yes) {return true;}
+            if (yes) { return true; }
             return false;
         }
 
@@ -143,6 +148,7 @@ namespace BussinessLayer.Services
         {
             var l = new PassEntity() { Name = model.Name, pass = model.Password, PublicId = model.PublicId };
             await _context.Passs.AddAsync(l);
+            _context.SaveChanges();
             return true;
         }
 

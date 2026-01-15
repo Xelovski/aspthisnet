@@ -136,7 +136,7 @@ namespace WebApplication2.Controllers
         }
         public async Task<IActionResult> Login()
         {
-            ViewBag.Name = "0";
+            ViewBag.Name = false;
             return View();
         }
         [HttpPost]
