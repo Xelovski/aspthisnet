@@ -139,14 +139,69 @@ namespace WebApplication2.Controllers
         }
         public async Task<IActionResult> Login()
         {
-            ViewBag.Name = false;
-            return View();
+            var isLoggedIn = HttpContext.Session.GetString("IsLoggedIn");
+
+            if (isLoggedIn != "true")
+            {
+                //if not logged in
+                ViewBag.Name = false;
+            }
+            else { ViewBag.Name = true; }
+
+
+                return View();
         }
         [HttpPost]
         public async Task<IActionResult> Login(string name, string pass)
         {
-            var l = new LoginDTO() { Name = name, Password = pass };
-            ViewBag.Name = await _userService.LoginAsync(l);
+            var loginDto = new LoginDTO
+            {
+                Name = name,
+                Password = pass
+            };
+
+            bool isLoggedIn = await _userService.LoginAsync(loginDto);
+            ViewBag.Name = isLoggedIn;
+
+            if (isLoggedIn)
+            {
+                // Session variable to track login state
+                HttpContext.Session.SetString("IsLoggedIn", "true");
+                HttpContext.Session.SetString("UserName", name);
+            }
+            else
+            {
+                HttpContext.Session.SetString("IsLoggedIn", "false");
+            }
+
+            return View();
+        }
+        public async Task<IActionResult> Reset()
+        {
+            HttpContext.Session.SetString("UserName", "Not Logged");
+            HttpContext.Session.SetString("IsLoggedIn", "false");
+            return RedirectToAction("Login");
+        }
+
+        // GET: Storepage
+        public async Task<IActionResult> Storepage()
+        {
+            // Check if user is logged in
+            var isLoggedIn = HttpContext.Session.GetString("IsLoggedIn");
+
+            if (isLoggedIn != "true")
+            {
+                // Redirect to login if not logged in
+                return RedirectToAction("Login");
+            }
+
+            // Initialize shopping cart session if it doesn't exist
+            if (HttpContext.Session.GetString("Cart") == null)
+            {
+                // Simple example: empty cart stored as JSON
+                HttpContext.Session.SetString("Cart", "[]");
+            }
+
             return View();
         }
     }

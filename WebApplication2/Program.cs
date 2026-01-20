@@ -13,6 +13,15 @@ builder.Services.AddDbContext<AppDbContext>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -23,6 +32,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseSession();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -37,7 +47,7 @@ app.MapControllerRoute(
 
 while (true)
 {
-    
+    /*
     using (var db = new AppDbContext())
     {
         db.Database.EnsureCreated();
@@ -60,7 +70,7 @@ while (true)
             Console.WriteLine($"ID:{u.Id},Jmeno:{u.Name},Emil:{u.Email}");
         }
         Console.WriteLine("");
-    }
+    }*/
     break;
 }
 app.Run();
