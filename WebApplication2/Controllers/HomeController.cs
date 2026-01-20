@@ -17,11 +17,11 @@ namespace WebApplication2.Controllers
         private readonly AppDbContext _context;
         private readonly IUserService _userService;
 
-        public HomeController(ILogger<HomeController> logger, AppDbContext context,IUserService usS)
+        public HomeController(ILogger<HomeController> logger, AppDbContext context, IUserService usS)
         {
-            _context= context;
+            _context = context;
             _logger = logger;
-            _userService= usS;
+            _userService = usS;
         }
 
         public async Task<IActionResult> Users()
@@ -29,15 +29,15 @@ namespace WebApplication2.Controllers
             var q = await _userService.GetAllAsync();
             var userList = await _userService.GetAllPublicIdAsync();
             ViewBag.UserList = "[";
-            foreach(var u in userList)
+            foreach (var u in userList)
             {
 
-                ViewBag.UserList += $"'{u}'"+",";
+                ViewBag.UserList += $"'{u}'" + ",";
             }
             var a = "";
             a = ViewBag.UserList;
             var i = a.Length;
-            ViewBag.UserList=a.Substring(0, i - 1);
+            ViewBag.UserList = a.Substring(0, i - 1);
             //Console.WriteLine(a);
             //ViewBag.UserList.Substring(0, i-5);
             ViewBag.UserList += "]";
@@ -45,7 +45,7 @@ namespace WebApplication2.Controllers
             return View(q);
         }
         [HttpPost]
-        public async Task<IActionResult> Users(List<string> name) 
+        public async Task<IActionResult> Users(List<string> name)
         {
 
             var userList = await _userService.GetAllPublicIdAsync();
@@ -53,9 +53,10 @@ namespace WebApplication2.Controllers
             //ViewBag.List = new List<string>();
             //Console.WriteLine(name.GetType());
             //Console.WriteLine("-----------------asd----------------------asd----------------------asd------------------");
-            foreach (var user in name) {
-                var a=user.Split(",");
-                foreach(var i in a)
+            foreach (var user in name)
+            {
+                var a = user.Split(",");
+                foreach (var i in a)
                 {
                     //Console.WriteLine(i);
                     await _userService.DeleteAsync(new Guid(i));
@@ -65,10 +66,10 @@ namespace WebApplication2.Controllers
             return RedirectToAction("Users");
         }
         public IActionResult Index()
-        {return View();}
+        { return View(); }
 
         public IActionResult Privacy()
-        {return View();}
+        { return View(); }
         public async Task<IActionResult> User(Guid userPublicID)//userDetail
         {
             var user = await _userService.GetByPublicIIdAsync(userPublicID);
@@ -81,54 +82,51 @@ namespace WebApplication2.Controllers
             };
             return View(a);
         }
-        public async Task<IActionResult> MakeUser() {
+        public async Task<IActionResult> MakeUser()
+        {
             return View(new cREATEuSERModel());
         }
         [HttpPost]
         public async Task<IActionResult> MakeUser(cREATEuSERModel us)
         {
-            Console.WriteLine("123456789123456789");
-            var ot= 0; var q=new UserDTO();
+            var ot = 0; var q = new UserDTO();
             var userList = await _userService.GetAllAsync();
-            foreach (var user in userList) 
-                { if (ot < user.Id) { ot = user.Id; } }
+            foreach (var user in userList) { if (ot < user.Id) { ot = user.Id; } }
             if (us == null || us.Name == "" || us.Email == "" || us.Name == null || us.Email == null)
-                { q = new UserDTO() { Name = "wh", Emil = "q@q.q", Id = ot + 1, PublicId = Guid.NewGuid() }; }
-            else 
-                { q = new UserDTO() { Name = us.Name, Emil = us.Email, Id = ot + 1, PublicId = Guid.NewGuid() }; }
-
+            { q = new UserDTO() { Name = "wh", Emil = "q@q.q", Id = ot + 1, PublicId = Guid.NewGuid() }; }
+            else { q = new UserDTO() { Name = us.Name, Emil = us.Email, Id = ot + 1, PublicId = Guid.NewGuid() }; }
             await _userService.CreateAsync(q);
             var l = new LoginDTO();
-            if (us == null || us.Name == "" || us.Password == null ||us.Password== "" || us.Name == null)
+            if (us == null || us.Name == "" || us.Password == null || us.Password == "" || us.Name == null)
             {
-                l = new LoginDTO() { Name = "wh", Password = "0" , PublicId = Guid.NewGuid() };
+                l = new LoginDTO() { Name = "wh", Password = "0", PublicId = Guid.NewGuid() };
             }
             else
             {
                 l = new LoginDTO() { Name = us.Name, Password = us.Password, PublicId = Guid.NewGuid() };
             }
-            Console.WriteLine(l.PublicId);
             await _userService.Register(l);
             return RedirectToAction("Users");
         }
-        public async Task<IActionResult> Update(Guid userPublicID) 
-        {            
+        public async Task<IActionResult> Update(Guid userPublicID)
+        {
             var user = await _userService.GetByPublicIIdAsync(userPublicID);
-            return View(new UpdateModel() { PublicId=userPublicID,Email=user.Emil});
+            return View(new UpdateModel() { PublicId = userPublicID, Email = user.Emil });
         }
         [HttpPost]
         public async Task<IActionResult> Update(UpdateModel model)
         {
-            if (model == null || model.Email == "" || model.Email == null )
+            if (model == null || model.Email == "" || model.Email == null)
             {
                 model = new UpdateModel() { PublicId = model.PublicId, Email = "qq@qq.qq" };
             }
             var us = await _userService.GetByPublicIIdAsync(model.PublicId);
-            var n = new UserDTO() {
-                Id=us.Id,
-                Emil=model.Email,
-                Name=us.Name,
-                PublicId=us.PublicId
+            var n = new UserDTO()
+            {
+                Id = us.Id,
+                Emil = model.Email,
+                Name = us.Name,
+                PublicId = us.PublicId
             };
             await _userService.UpdateAsync(n);
             return RedirectToAction("Users");
@@ -145,11 +143,10 @@ namespace WebApplication2.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Login(string name,string pass)
+        public async Task<IActionResult> Login(string name, string pass)
         {
             var l = new LoginDTO() { Name = name, Password = pass };
             ViewBag.Name = await _userService.LoginAsync(l);
-            Console.WriteLine(ViewBag.Name);
             return View();
         }
     }

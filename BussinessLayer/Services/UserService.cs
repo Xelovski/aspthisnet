@@ -40,8 +40,8 @@ namespace BussinessLayer.Services
         public async Task<bool> DeleteAsync(Guid publicId)//async
         {
             var us = await _userRepository.GetAllAsync();
-            var user = await _userRepository.GetByPublicIdAsync(publicId); 
-            if (user == null) { return false; } 
+            var user = await _userRepository.GetByPublicIdAsync(publicId);
+            if (user == null) { return false; }
             _userRepository.Delete(user);
             await _userRepository.SaveChangesAsync();
             return true;
@@ -70,13 +70,13 @@ namespace BussinessLayer.Services
 
         public async Task<List<UserDTO>> GetAllAsync()//async
         {
-            var userList=await _userRepository.GetAllAsync();
-            var userListDTO=new List<UserDTO>();
+            var userList = await _userRepository.GetAllAsync();
+            var userListDTO = new List<UserDTO>();
             foreach (UserEntity? user in userList)
             {
                 var userDTO = new UserDTO()
                 {
-                    Id =user.Id,
+                    Id = user.Id,
                     PublicId = user.PublicId,
                     Name = user.Name,
                     Emil = user.Email
@@ -103,8 +103,8 @@ namespace BussinessLayer.Services
             foreach (UserEntity? i in us)
             {
                 if (publicId == i.PublicId)
-                { 
-                    userDTO= new UserDTO()
+                {
+                    userDTO = new UserDTO()
                     {
                         Id = i.Id,
                         PublicId = i.PublicId,
@@ -118,7 +118,7 @@ namespace BussinessLayer.Services
 
         public async Task<bool> LoginAsync(LoginDTO log)
         {
-            var yes=false;
+            var yes = false;
             var userList = await _userRepository.GetAllAsync();
             Console.WriteLine("--------------------------------------------------------");
             foreach (UserEntity? i in userList)
@@ -126,12 +126,12 @@ namespace BussinessLayer.Services
                 if (log.Name == i.Name)
                 {
                     Console.WriteLine("+++++++++++++++++++++++++++++++++++");
-                    var q= await _context.Passs.ToListAsync();
+                    var q = await _context.Passs.ToListAsync();
                     Console.WriteLine(q.Count());
                     foreach (var item in q)
                     {
-                            Console.WriteLine(item);
-                        
+                        Console.WriteLine(item.pass);
+
                         if (log.Password == item.pass)
                         {
                             yes = true; break;
@@ -140,19 +140,15 @@ namespace BussinessLayer.Services
                     //check if password correct
                 }
             }
-            if (yes) {return true;}
+            if (yes) { return true; }
             return false;
         }
 
         public async Task<bool> Register(LoginDTO model)
         {
-            Console.WriteLine(model.PublicId);
-            var a = "" + model.PublicId;
-            var b= a.Substring(0,36);
-            Console.WriteLine(b);
             var l = new PassEntity() { Name = model.Name, pass = model.Password, PublicId = model.PublicId };
             await _context.Passs.AddAsync(l);
-            _context.Passs.Add(l);
+            _context.SaveChanges();
             return true;
         }
 
