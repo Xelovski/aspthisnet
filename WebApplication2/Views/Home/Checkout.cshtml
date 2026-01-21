@@ -1,0 +1,24 @@
+﻿Check-out
+<br />
+@foreach (var item in ViewBag.x)
+{
+    <form asp-action="Checkout" method="post" style="display:inline;">
+        <input type="hidden" name="name" value="@item.Name" />
+        <input type="hidden" name="actionType" value="remove" />
+        <button type="submit" @(item.Count <= 1 ? "disabled" : "")>−</button>
+    </form>
+
+    <span><strong>@item.Name</strong>x @item.Count</span>
+    
+
+    <form asp-action="Checkout" method="post" style="display:inline;">
+        <input type="hidden" name="name" value="@item.Name" />
+        <input type="hidden" name="actionType" value="add" />
+        <button type="submit">+</button>
+    </form>
+
+    <br /><br />
+}
+
+
+

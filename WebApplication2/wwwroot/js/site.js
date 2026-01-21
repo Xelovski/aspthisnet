@@ -116,7 +116,7 @@ function Del() {
     eval(`a = ${a}`);
     var q = [];
     a.forEach(usr => {
-        console.log(a);
+        //console.log(a);
 
         if (document.getElementById(`${usr}`).checked) {
             q.push(usr);
@@ -125,3 +125,11 @@ function Del() {
     document.getElementById("here").value = q;
     document.getElementById("suser").style = "display:block;";
 }
+
+function CartAdd(a) {
+    document.getElementById("Cart01").value+=""+a+",";
+}
+
+
+
+

@@ -42,30 +42,17 @@ namespace BussinessLayer.Services
             var us = await _userRepository.GetAllAsync();
             var user = await _userRepository.GetByPublicIdAsync(publicId);
             if (user == null) { return false; }
+            var alpas = await _context.Passs.ToListAsync();
+            foreach(var q in alpas)
+            {
+                if (q.PublicId == publicId)
+                {
+                    _context.Passs.Remove(q);
+                }
+            }
             _userRepository.Delete(user);
             await _userRepository.SaveChangesAsync();
             return true;
-            /*
-            foreach (UserEntity? i in us)
-            {
-                if (publicId == i.PublicId)
-                {
-                    var a = new UserEntity()
-                    {
-                        Id = i.Id,
-                        Name = i.Name,
-                        Email = i.Email,
-                        PublicId = i.PublicId,
-                    };
-                    if (a != null)
-                    {
-                        _context.Users.Remove(a);
-                        //_context.Users.ExecuteDeleteAsync
-                        _context.SaveChanges();
-                    }
-                }
-            }
-            return true;*/
         }
 
         public async Task<List<UserDTO>> GetAllAsync()//async
@@ -120,14 +107,14 @@ namespace BussinessLayer.Services
         {
             var yes = false;
             var userList = await _userRepository.GetAllAsync();
-            Console.WriteLine("--------------------------------------------------------");
+            //Console.WriteLine("--------------------------------------------------------");
             foreach (UserEntity? i in userList)
             {
                 if (log.Name == i.Name)
                 {
-                    Console.WriteLine("+++++++++++++++++++++++++++++++++++");
+                    //Console.WriteLine("+++++++++++++++++++++++++++++++++++");
                     var q = await _context.Passs.ToListAsync();
-                    Console.WriteLine(q.Count());
+                    //Console.WriteLine(q.Count());
                     foreach (var item in q)
                     {
                         Console.WriteLine(item.pass);

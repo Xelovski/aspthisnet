@@ -1,1 +1,19 @@
 ﻿Store
+<script>
+    function CartAdd(a) {
+        document.getElementById("Cart01").value += a + ",";
+    }
+</script>
+
+<form action="Storepage" method="post">
+    <input type="text" name="name" id="Cart01" value="" />
+    <input type="submit" value="To check out" />
+</form>
+
+@foreach (var a in ViewBag.x)
+{
+    <label>@a</label>
+    <button type="button" onclick="CartAdd('@a')">add</button>
+    <br />
+}
+
