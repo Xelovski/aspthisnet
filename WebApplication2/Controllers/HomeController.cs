@@ -141,7 +141,6 @@ namespace WebApplication2.Controllers
 
             if (isLoggedIn != "true")
             {
-                //if not logged in
                 ViewBag.Name = false;
             }
             else { ViewBag.Name = true; }
@@ -161,7 +160,7 @@ namespace WebApplication2.Controllers
             ViewBag.Name = isLoggedIn;
             if (isLoggedIn)
             {
-                // Session variable to track login state
+                
                 HttpContext.Session.SetString("Cart", "");
                 HttpContext.Session.SetString("IsLoggedIn", "true");
                 HttpContext.Session.SetString("UserName", name);
