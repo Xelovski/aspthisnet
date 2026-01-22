@@ -267,10 +267,15 @@ namespace WebApplication2.Controllers
                 var items = cart
                     .Split(",", StringSplitOptions.RemoveEmptyEntries)
                     .ToList();
+
+
                 var order = HttpContext.Session.GetString("Order") ?? "";
-                var userOrder = order
+                var userOrder = order 
                     .Split(";", StringSplitOptions.RemoveEmptyEntries)
-                    .FirstOrDefault(o => o.StartsWith(u + ":"));
+                    .FirstOrDefault(o => o.StartsWith(u + ":"))?? " ";
+                var q = userOrder
+                    .Split(",", StringSplitOptions.RemoveEmptyEntries)
+                    .ToList();
                 var orderedItems = new List<string>();
                 if (userOrder != null)
                 {
@@ -279,7 +284,7 @@ namespace WebApplication2.Controllers
                         .Split(",", StringSplitOptions.RemoveEmptyEntries)
                         .ToList();
                 }
-                ViewBag.x = items.ToList();
+                ViewBag.x = q.ToList();
             }
             return View();
         }
