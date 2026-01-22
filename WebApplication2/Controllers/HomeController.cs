@@ -65,11 +65,9 @@ namespace WebApplication2.Controllers
             //await _userService.DeleteAsync(name);
             return RedirectToAction("Users");
         }
-        public IActionResult Index()
-        { return View(); }
+        public IActionResult Index(){ return View(); }
 
-        public IActionResult Privacy()
-        { return View(); }
+        public IActionResult Privacy(){ return View(); }
         public async Task<IActionResult> User(Guid userPublicID)//userDetail
         {
             var user = await _userService.GetByPublicIIdAsync(userPublicID);
@@ -181,18 +179,14 @@ namespace WebApplication2.Controllers
             HttpContext.Session.SetString("Cart", "");
             return RedirectToAction("Login");
         }
-
-        // GET: Storepage
         public async Task<IActionResult> Storepage()
         {
-            // Check if user is logged in
+            
             var isLoggedIn = HttpContext.Session.GetString("IsLoggedIn");
             if (isLoggedIn != "true")
             {
-                // Redirect to login if not logged in
                 return RedirectToAction("Login");
             }
-            //var cart = HttpContext.Session.GetString("Cart");
             List<string> s = new List<string>
             {
                 "Alice",
@@ -201,27 +195,29 @@ namespace WebApplication2.Controllers
             };
             //Console.WriteLine(cart);
             ViewBag.x=s;
-
-            // Initialize shopping cart session if it doesn't exist
             if (HttpContext.Session.GetString("Cart") == null)
             {
-                // Simple example: empty cart stored as JSON
                 HttpContext.Session.SetString("Cart", "");
             }
-
+            if (HttpContext.Session.GetString("Order") == null)
+            {
+                HttpContext.Session.SetString("Order", "");
+            }
             return View();
         }
         [HttpPost]
         public async Task<IActionResult> Storepage(string name)
         {
+            var o = HttpContext.Session.GetString("Order");
+            var u=HttpContext.Session.GetString("UserName");
             var a = HttpContext.Session.GetString("Cart");
             HttpContext.Session.SetString("Cart", ""+a+name);
+            HttpContext.Session.SetString("Order", ""+o+";"+u+": "+a+name);
             return RedirectToAction("Checkout");
         }
-        public IActionResult Checkout()
+        public async Task<IActionResult> Checkout()
         {
             var cart = HttpContext.Session.GetString("Cart") ?? "";
-
             var grouped = cart
                 .Split(",", StringSplitOptions.RemoveEmptyEntries)
                 .GroupBy(x => x)
@@ -231,41 +227,100 @@ namespace WebApplication2.Controllers
                     Count = g.Count()
                 })
                 .ToList();
-
             ViewBag.x = grouped;
             return View();
         }
 
         [HttpPost]
-        public IActionResult Checkout(string name, string actionType)
+        public async Task<IActionResult> Checkout(string name, string actionType)
         {
             var cart = HttpContext.Session.GetString("Cart") ?? "";
-
             var items = cart
                 .Split(",", StringSplitOptions.RemoveEmptyEntries)
                 .ToList();
 
-            if (actionType == "add")
-            {
+            var order = HttpContext.Session.GetString("Order") ?? "";
+            var qew = order
+                .Split(";", StringSplitOptions.RemoveEmptyEntries)
+                .ToList();
+            if (actionType == "add"){
                 items.Add(name);
             }
-            else if (actionType == "remove")
-            {
-                items.Remove(name); // removes ONE instance
+            else if (actionType == "remove"){
+                items.Remove(name); 
             }
 
             var newCart = string.Join(",", items) + (items.Any() ? "," : "");
             HttpContext.Session.SetString("Cart", newCart);
-
             ViewBag.x = items
                 .GroupBy(x => x)
-                .Select(g => new
-                {
+                .Select(g => new{
                     Name = g.Key,
                     Count = g.Count()
                 })
                 .ToList();
 
+            return View();
+        }
+        public async Task<IActionResult> Orders()
+        {
+            var isLoggedIn = HttpContext.Session.GetString("IsLoggedIn");
+            var u = HttpContext.Session.GetString("UserName");
+            if (isLoggedIn != "true")
+            {
+                return RedirectToAction("Login");
+            }
+            else if (u == "a") //admin
+            {
+
+                var cart = HttpContext.Session.GetString("Order") ?? "";
+                var items = cart
+                    .Split(";", StringSplitOptions.RemoveEmptyEntries)
+                    .ToList();
+
+                
+                ViewBag.x = items.ToList();
+            }
+            else // user
+            {
+                var cart = HttpContext.Session.GetString("Cart") ?? "";
+                var items = cart
+                    .Split(",", StringSplitOptions.RemoveEmptyEntries)
+                    .ToList();
+
+                var order = HttpContext.Session.GetString("Order") ?? "";
+
+                var userOrder = order
+                    .Split(";", StringSplitOptions.RemoveEmptyEntries)
+                    .FirstOrDefault(o => o.StartsWith(u + ":"));
+
+                var orderedItems = new List<string>();
+                if (userOrder != null)
+                {
+                    orderedItems = userOrder
+                        .Substring(u.Length + 1)
+                        .Split(",", StringSplitOptions.RemoveEmptyEntries)
+                        .ToList();
+                }
+                ViewBag.x = items.ToList();
+            }
+
+            return View();
+        }
+
+        public async Task<IActionResult> Ch()
+        {
+            var isLoggedIn = HttpContext.Session.GetString("IsLoggedIn");
+            var u = HttpContext.Session.GetString("UserName");
+            if (isLoggedIn != "true")
+            {
+                return RedirectToAction("Login");
+            }
+
+            return View();
+        }
+        public async Task<IActionResult> Rs()
+        {
             return View();
         }
 
