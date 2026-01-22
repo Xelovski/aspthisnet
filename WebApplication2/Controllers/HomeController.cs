@@ -188,9 +188,11 @@ namespace WebApplication2.Controllers
             }
             List<string> s = new List<string>
             {
-                "Alice",
-                "Bob",
-                "Charlie"
+                "Soup",
+                "The_picar",
+                "Keyboard",
+                "Guitar",
+                "9mi_(gun)"
             };
             //Console.WriteLine(cart);
             ViewBag.x=s;
