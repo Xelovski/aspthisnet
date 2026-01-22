@@ -177,7 +177,7 @@ namespace WebApplication2.Controllers
                 "The_picar",
                 "Keyboard",
                 "Guitar",
-                "9mi_(gun)"
+                "9mil_(gun)"
             };
             //Console.WriteLine(cart);
             ViewBag.x=s;
