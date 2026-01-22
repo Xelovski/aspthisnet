@@ -10,8 +10,7 @@ using WebApplication2.Models;
 namespace WebApplication2.Controllers
 {
     public class HomeController : Controller
-    {
-        //----------------------------------------------------------------
+    {        
         private static List<UserDTO> _users = new List<UserDTO>();
         private readonly ILogger<HomeController> _logger;
         private readonly AppDbContext _context;
@@ -31,28 +30,20 @@ namespace WebApplication2.Controllers
             ViewBag.UserList = "[";
             foreach (var u in userList)
             {
-
                 ViewBag.UserList += $"'{u}'" + ",";
             }
             var a = "";
             a = ViewBag.UserList;
             var i = a.Length;
-            ViewBag.UserList = a.Substring(0, i - 1);
-            //Console.WriteLine(a);
-            //ViewBag.UserList.Substring(0, i-5);
+            ViewBag.UserList = a.Substring(0, i - 1);            
             ViewBag.UserList += "]";
-
             return View(q);
         }
         [HttpPost]
         public async Task<IActionResult> Users(List<string> name)
         {
-
             var userList = await _userService.GetAllPublicIdAsync();
-            ViewBag.UserList = userList.ToList();
-            //ViewBag.List = new List<string>();
-            //Console.WriteLine(name.GetType());
-            //Console.WriteLine("-----------------asd----------------------asd----------------------asd------------------");
+            ViewBag.UserList = userList.ToList();            
             foreach (var user in name)
             {
                 var a = user.Split(",");
@@ -61,8 +52,7 @@ namespace WebApplication2.Controllers
                     //Console.WriteLine(i);
                     await _userService.DeleteAsync(new Guid(i));
                 }
-            }
-            //await _userService.DeleteAsync(name);
+            }            
             return RedirectToAction("Users");
         }
         public IActionResult Index(){ return View(); }
@@ -138,14 +128,11 @@ namespace WebApplication2.Controllers
         public async Task<IActionResult> Login()
         {
             var isLoggedIn = HttpContext.Session.GetString("IsLoggedIn");
-
             if (isLoggedIn != "true")
             {
                 ViewBag.Name = false;
             }
             else { ViewBag.Name = true; }
-
-
                 return View();
         }
         [HttpPost]
@@ -159,8 +146,7 @@ namespace WebApplication2.Controllers
             bool isLoggedIn = await _userService.LoginAsync(loginDto);
             ViewBag.Name = isLoggedIn;
             if (isLoggedIn)
-            {
-                
+            {                
                 HttpContext.Session.SetString("Cart", "");
                 HttpContext.Session.SetString("IsLoggedIn", "true");
                 HttpContext.Session.SetString("UserName", name);
@@ -179,8 +165,7 @@ namespace WebApplication2.Controllers
             return RedirectToAction("Login");
         }
         public async Task<IActionResult> Storepage()
-        {
-            
+        {            
             var isLoggedIn = HttpContext.Session.GetString("IsLoggedIn");
             if (isLoggedIn != "true")
             {
@@ -239,7 +224,6 @@ namespace WebApplication2.Controllers
             var items = cart
                 .Split(",", StringSplitOptions.RemoveEmptyEntries)
                 .ToList();
-
             var order = HttpContext.Session.GetString("Order") ?? "";
             var qew = order
                 .Split(";", StringSplitOptions.RemoveEmptyEntries)
@@ -250,7 +234,6 @@ namespace WebApplication2.Controllers
             else if (actionType == "remove"){
                 items.Remove(name); 
             }
-
             var newCart = string.Join(",", items) + (items.Any() ? "," : "");
             HttpContext.Session.SetString("Cart", newCart);
             ViewBag.x = items
@@ -260,7 +243,6 @@ namespace WebApplication2.Controllers
                     Count = g.Count()
                 })
                 .ToList();
-
             return View();
         }
         public async Task<IActionResult> Orders()
@@ -273,13 +255,10 @@ namespace WebApplication2.Controllers
             }
             else if (u == "a") //admin
             {
-
                 var cart = HttpContext.Session.GetString("Order") ?? "";
                 var items = cart
                     .Split(";", StringSplitOptions.RemoveEmptyEntries)
-                    .ToList();
-
-                
+                    .ToList();                
                 ViewBag.x = items.ToList();
             }
             else // user
@@ -288,13 +267,10 @@ namespace WebApplication2.Controllers
                 var items = cart
                     .Split(",", StringSplitOptions.RemoveEmptyEntries)
                     .ToList();
-
                 var order = HttpContext.Session.GetString("Order") ?? "";
-
                 var userOrder = order
                     .Split(";", StringSplitOptions.RemoveEmptyEntries)
                     .FirstOrDefault(o => o.StartsWith(u + ":"));
-
                 var orderedItems = new List<string>();
                 if (userOrder != null)
                 {
@@ -305,7 +281,6 @@ namespace WebApplication2.Controllers
                 }
                 ViewBag.x = items.ToList();
             }
-
             return View();
         }
 
@@ -317,7 +292,6 @@ namespace WebApplication2.Controllers
             {
                 return RedirectToAction("Login");
             }
-
             return View();
         }
         public async Task<IActionResult> Rs()
