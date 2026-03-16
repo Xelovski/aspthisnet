@@ -11,6 +11,7 @@ namespace BussinessLayer.Interfaces.Services
     {
         Task<List<UserDTO>> GetAllAsync();
         Task<UserDTO> GetByPublicIIdAsync(Guid publicId);
+        Task<UserDTO?> GetByIdAsync(int id);
         Task<bool> CreateAsync(UserDTO model);
         Task<bool> UpdateAsync(UserDTO model);
         Task<bool> DeleteAsync(Guid publicId);
