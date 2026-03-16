@@ -27,13 +27,6 @@
                 </td>
                 <td>
                     <input type="checkbox" name=@user.Id id=@user.PublicId value=@user.PublicId />
-                    <!--
-
-                    <form action="Users" method="post">
-                    <input type="hidden" name="name" value=user.PublicId />
-                    <input type="submit" value=" X " class="butto3" />
-                    </form>
-                    -->
                 </td>
             </tr>
         }
@@ -46,22 +39,3 @@
     <input type="hidden" name="name" id="here" value=[""] /><!-- here goes what to delete -->
     <button style="display:none;" id="suser">Confirm deletion</button>
 </form>
-
-<!--
-
-
-<script>
-    function Del(){
-        (ViewBag.List = new List<Guid>())
-        let a=document.getElementById("sus").value;
-        var q=[];
-        a.foreach(usr=>{
-            
-               if (document.getElementById(`${usr.Id}`).checked){
-                   q.push(usr.PublicId);
-               }
-        })
-        document.getElementById("here").value=q;
-        document.getElementById("suser").style="display:block;";
-    }
-</script>-->
