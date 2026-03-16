@@ -24,16 +24,24 @@ namespace WebApplication2.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
+            if (id == 0)
+            {
+                return BadRequest();
+            }
             var o = await _userService.GetByIdAsync(id);
             if (o == null)
             {
-                return NotFound();
+                return NotFound();//too lazy to add more messages... :(
             }
             return Ok(o);
         }
         [HttpPost]
         public async Task<IActionResult> CreateAsync([FromBody] cREATEuSERModel us)
         {
+            if (us == null) 
+            {
+                return BadRequest("Missing");
+            }
             var ot = 0; var q = new UserDTO();
             var userList = await _userService.GetAllAsync();
             foreach (var user in userList) { if (ot < user.Id) { ot = user.Id; } }
@@ -55,22 +63,46 @@ namespace WebApplication2.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAsync(int id, [FromBody] UpdateModel model)
         {
+            if (model == null||id==0)
+            {
+                return BadRequest("Something is missing. . .");
+            }
             var o = await _userService.GetByIdAsync(id);
             var user=new UserDTO() { Id=id,Name=o.Name,PublicId=o.PublicId,Emil=model.Email};
             var updated = await _userService.UpdateAsync(user);
             if (!updated)
-                return NotFound();
-            return Ok();
+                return NotFound("Hold up how did ya get here?");
+            return Ok(updated);
         }
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync(int id)
+        public async Task<IActionResult> DeleteAsync(int id=0)
         {
+            if (id == 0)
+            {
+                return BadRequest("User of ID 0 does not exist (or if not given)"); 
+            }
             var o = await _userService.GetByIdAsync(id);
             var deleted = await _userService.DeleteAsync(o.PublicId);
             if (!deleted)
-                return NotFound();
-            return Ok();
+                return NotFound("The user does not exist");
+            return Ok(deleted);
         }
-        //Login
+        [HttpPost("login")]//Login
+        public async Task<IActionResult> LoginAsync([FromBody] LoginDTO login)
+        {
+            if (login == null)
+            {
+                return BadRequest("Missing login info");
+            }
+            else
+            {   
+                var q=await _userService.LoginAsync(login);
+                if (!q)
+                {
+                    return BadRequest("Wrong name or password"); 
+                }
+                return Ok(q);
+            }
+        }
     }
 }
