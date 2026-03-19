@@ -6,7 +6,7 @@ using WebApplication2.Models;
 namespace WebApplication2.Controllers
 {
     [ApiController]
-    [Route("api")]
+    [Route("[controller]")]
     public class ApiCController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -16,11 +16,6 @@ namespace WebApplication2.Controllers
             _userService = userService;
         }
         [HttpGet]
-        public async Task<IActionResult> Move()
-        {
-            return RedirectPermanent("");
-        }
-        [HttpGet("users")]
         public async Task<IActionResult> GetAll()
         {
             return Ok(await _userService.GetAllAsync());
