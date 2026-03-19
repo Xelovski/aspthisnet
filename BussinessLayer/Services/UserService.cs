@@ -78,7 +78,7 @@ namespace BussinessLayer.Services
             var userListDTO= await GetAllAsync();
             foreach (UserDTO? user in userListDTO)
             {
-                if (!user.Id.Equals(id-1))
+                if (user.Id.Equals(id))
                 {
                     return user;
                 }

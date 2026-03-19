@@ -15,7 +15,7 @@ namespace WebApplication2.Controllers
         {
             _userService = userService;
         }
-        [HttpGet]
+        [HttpGet(Name ="GetUsers")]
         public async Task<IActionResult> GetAll()
         {
             return Ok(await _userService.GetAllAsync());
@@ -34,7 +34,7 @@ namespace WebApplication2.Controllers
             }
             return Ok(o);
         }
-        [HttpPost]
+        [HttpPost(Name ="AddUser")]
         public async Task<IActionResult> CreateAsync([FromBody] cREATEuSERModel us)
         {
             if (us == null)
